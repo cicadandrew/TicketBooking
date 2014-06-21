@@ -3,6 +3,7 @@ package com.ticket;
 import java.util.Date;
 import java.util.Random;
 
+import com.service.TicketOrderService;
 import com.service.TrainInfo;
 import com.service.TrainInfo.TimeInfo;
 
@@ -22,8 +23,24 @@ public class Ticket {
 
 	// TODO: fill in the constructor
 	public Ticket(String ticketID) {
+		TicketOrderService.getTickets().get(Integer.parseInt(ticketID));
+	}
+	
+	public static Ticket getTicket(String ticketID) {
 		// 回傳ticketID
-		this.ticketID = ticketID;
+		if (TicketOrderService.getTickets().get(Integer.parseInt(ticketID)) != null)
+			return TicketOrderService.getTickets().get(Integer.parseInt(ticketID));
+		else 
+			return null;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof Ticket) {
+			return this.getTicketID().equals(((Ticket) obj).getTicketID());
+		}
+		return false;
 	}
 
 	// TODO: fill in the constructor
@@ -39,26 +56,26 @@ public class Ticket {
 	}
 
 	// TODO: create the ticket and store the attributes.
-	public void create(String studentID, Date date, String startStation,
-			String endStation, int trainID) {
+	public void create(Ticket ticket) {
 		// 開上
-		if (this.studentID.equals(studentID) && this.date.equals(date)
-				&& this.startStation.equals(startStation)
-				&& this.endStation.equals(endStation)
-				&& this.trainID == trainID){
-			
-			Deptime = TimeInfo.getDeptime();
+		if (this.studentID.equals(ticket.studentID)
+				&& this.date.equals(ticket.date)
+				&& this.startStation.equals(ticket.startStation)
+				&& this.endStation.equals(ticket.endStation)
+				&& this.trainID == ticket.trainID) {
+
+			Deptime = TrainInfo.TimeInfo.getDeptime();
 			Arrtime = TimeInfo.getArrtime();
 			setSeat();
 		}
-
-			
 
 	}
 
 	// TODO: please release the seat here.
 	public boolean cancel() {
 		// delete
+
+		this.setTicketID(null);
 		this.studentID = null;
 		this.date = null;
 		this.startStation = null;
@@ -67,7 +84,8 @@ public class Ticket {
 		this.seatBook = false;
 		this.Deptime = null;
 		this.Arrtime = null;
-		
+		this.seat.cancelSeat();
+
 		return this.seatBook;
 
 	}
@@ -88,7 +106,7 @@ public class Ticket {
 		 * TODO:Please print the 1) Date 2) Train Type 3) Train No 4) Dep Time
 		 * 5) Arr Time 6) Seat Number
 		 */
-
+		System.out.println("Ticket ID  " + this.ticketID);
 		System.out.println("1) Date: " + this.date);
 		System.out.println("2) Train Type: " + this.trainID);
 		System.out.println("3) Train No: " + this.seat.carNum);
@@ -103,11 +121,10 @@ public class Ticket {
 		// TODO: return the seat object
 		return this.seat;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
-
 
 	/*
 	 * There are only four cars in each train. And in each car, there are
@@ -120,11 +137,17 @@ public class Ticket {
 		return trainID;
 	}
 
-
 	public String getEndStation() {
 		return endStation;
 	}
 
+	public String getTicketID() {
+		return ticketID;
+	}
+
+	public void setTicketID(String ticketID) {
+		this.ticketID = ticketID;
+	}
 
 	class Seat {
 		// 有車號有座位號
@@ -133,9 +156,26 @@ public class Ticket {
 		private String seatNum;
 
 		// TODO Any constructor here
+		public Seat() {
+
+		}
+
 		public Seat(int carNum, int seatNum) {
 			this.carNum = Integer.toString(carNum);
 			this.seatNum = Integer.toString(seatNum);
+		}
+
+		public void cancelSeat() {
+			this.setCarNum(null);
+			this.setSeatNum(null);
+		}
+
+		public void setCarNum(String carNum) {
+			this.carNum = carNum;
+		}
+
+		public void setSeatNum(String seatNum) {
+			this.seatNum = seatNum;
 		}
 
 		@Override
@@ -144,8 +184,6 @@ public class Ticket {
 			// 1-03, 12-03, 10-32)
 			return this.carNum + "-" + this.seatNum;
 		}
-		
-		
 
 	}
 }

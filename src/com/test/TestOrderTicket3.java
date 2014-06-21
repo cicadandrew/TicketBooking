@@ -42,7 +42,7 @@ public class TestOrderTicket3 {
  		String       startStation = "1003"; //SongShan Station
 		String       endStation   = "1008"; //Taipei Station
 		
-		int          trainID      =  1111;
+		int          trainID      =  1100;
 		int          ticketnum    =  2;
 		
 		try {
@@ -64,18 +64,20 @@ public class TestOrderTicket3 {
 			System.err.print(e.getMessage());
 		}
 		
-		
 		List<String> ticketNos = new ArrayList<>();
 		for(Ticket ticket: tickets){
 			ticket.printTicket();
 			//TODO: get the ticket number(TicketNo) of each ticket and save them into ticket 
+			ticketNos.add(ticket.getTicketID());
 			
 		}
+		
+		System.out.println(tickets.size() + "\n");
 		
 		
 		//TODO Retrieve the number from the last booking
 		for(String ticketNo: ticketNos){
-			Ticket ticket = new Ticket(ticketNo);
+			Ticket ticket = Ticket.getTicket(ticketNo);
 			ticket.printTicket();
 		}
 		

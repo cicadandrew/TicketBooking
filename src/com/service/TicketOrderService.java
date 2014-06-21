@@ -23,7 +23,8 @@ public class TicketOrderService {
 	List<TrainInfo> trains = new ArrayList<TrainInfo>();
 	TrainInfo traincheck;
 	List<TimeInfo> table = new ArrayList<TimeInfo>();
-	private List<Ticket> tickets = new ArrayList<Ticket>();
+	private static List<Ticket> tickets = new ArrayList<Ticket>();
+	int ticketIDcheck;
 
 	protected TicketOrderService() {
 
@@ -59,9 +60,15 @@ public class TicketOrderService {
 	 * You have to use the Real-Time Table
 	 */
 
+	public static List<Ticket> getTickets() {
+		return tickets;
+	}
+
 	public List<Ticket> order(String studentID, Date date, String startStation,
 			String endStation, int trainID, int count)
 			throws TicketOrderException {
+		
+		List<Ticket> ticketi = new ArrayList<Ticket>();
 
 		// TODO if the tickets are not available or sold out. Please throw the
 		// related exception.
@@ -72,13 +79,30 @@ public class TicketOrderService {
 			throw new TicketOrderException(type);
 
 		// .... more exceptions
-		for (int i = 0; i < count; i++) {
+
+		if (tickets.size() != 0)
+			for (int i = tickets.size() - 1; i > 0; i--) {
+				if (tickets.get(i).getTicketID() == null) {
+					tickets.remove(i);
+				} else {
+					ticketIDcheck = i + 1;
+					break;
+				}
+
+			}
+		else
+			ticketIDcheck = 0;
+
+		for (int i = ticketIDcheck; i < ticketIDcheck + count; i++) {
 			Ticket ticket = new Ticket(studentID, date, startStation,
 					endStation, trainID);
-			ticket.create(studentID, date, startStation, endStation, trainID);
+			ticket.create(ticket);
+			ticket.setTicketID("000" + i);
+			ticketi.add(ticket);
 			tickets.add(ticket);
 		}
-		return tickets;
+
+		return ticketi;
 	}
 
 	/*
@@ -167,7 +191,7 @@ public class TicketOrderService {
 
 	private boolean checkBookFull(Date date, String startStation, int trainID) {
 
-		boolean check = false;
+		boolean check;
 		int checkDay = 0;
 		int checkSeat = 0;
 
