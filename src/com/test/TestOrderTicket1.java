@@ -40,8 +40,8 @@ public class TestOrderTicket1 {
 			if (!tickets.contains(new Ticket(ticket1)))
 				tickets.add(new Ticket(ticket1)); // add successfully
 
-			if (!tickets.contains(new Ticket(ticket1)))
-				tickets.add(new Ticket(ticket1)); // this code does not execute.
+//			if (!tickets.contains(new Ticket(ticket1)))
+//				tickets.add(new Ticket(ticket1)); // this code does not execute.
 
 		} catch (Exception e) {
 			e.printStackTrace();
