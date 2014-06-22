@@ -1,5 +1,11 @@
 package com.ticket;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.Random;
 
@@ -20,17 +26,19 @@ public class Ticket {
 	private String Deptime;
 	private String Arrtime;
 	private boolean seatBook;
+	private File save;
 
 	// TODO: fill in the constructor
 	public Ticket(String ticketID) {
 		TicketOrderService.getTickets().get(Integer.parseInt(ticketID));
 	}
-	
+
 	public static Ticket getTicket(String ticketID) {
 		// 回傳ticketID
 		if (TicketOrderService.getTickets().get(Integer.parseInt(ticketID)) != null)
-			return TicketOrderService.getTickets().get(Integer.parseInt(ticketID));
-		else 
+			return TicketOrderService.getTickets().get(
+					Integer.parseInt(ticketID));
+		else
 			return null;
 
 	}
@@ -41,6 +49,14 @@ public class Ticket {
 			return this.getTicketID().equals(((Ticket) obj).getTicketID());
 		}
 		return false;
+	}
+
+	public String getDeptime() {
+		return Deptime;
+	}
+
+	public String getArrtime() {
+		return Arrtime;
 	}
 
 	// TODO: fill in the constructor
@@ -117,6 +133,35 @@ public class Ticket {
 
 	}
 
+	public void saveTicket() throws IOException {
+		save = new File("C:/Users/user/Desktop/Ticket.txt");
+		FileOutputStream fout = new FileOutputStream(save, true);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout));
+		bw.flush();
+
+		bw.write("Ticket ID  " + this.ticketID);
+		bw.newLine();
+		bw.write("1) Date: " + this.date);
+		bw.newLine();
+		bw.write("2) Train Type: " + this.trainID);
+		bw.newLine();
+		bw.write("3) Train No: " + this.seat.carNum);
+		bw.newLine();
+		bw.write("4) Dep Time: " + this.Deptime);
+		bw.newLine();
+		bw.write("5) Arr Time: " + this.Arrtime);
+		bw.newLine();
+		bw.write("6) Seat Number: " + this.seat.seatNum);
+		bw.newLine();
+		
+		bw.write("祝您旅途愉快!");
+
+		bw.flush();
+		bw.close();
+		fout.close();
+		System.out.println("完成");
+	}
+
 	public Seat getSeat() {
 		// TODO: return the seat object
 		return this.seat;
@@ -149,7 +194,7 @@ public class Ticket {
 		this.ticketID = ticketID;
 	}
 
-	class Seat {
+	public class Seat {
 		// 有車號有座位號
 		// TODO Any instances here
 		private String carNum;
@@ -176,6 +221,14 @@ public class Ticket {
 
 		public void setSeatNum(String seatNum) {
 			this.seatNum = seatNum;
+		}
+
+		public String getCarNum() {
+			return carNum;
+		}
+
+		public String getSeatNum() {
+			return seatNum;
 		}
 
 		@Override

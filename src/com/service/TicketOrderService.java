@@ -1,6 +1,10 @@
 package com.service;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +29,7 @@ public class TicketOrderService {
 	List<TimeInfo> table = new ArrayList<TimeInfo>();
 	private static List<Ticket> tickets = new ArrayList<Ticket>();
 	int ticketIDcheck;
+	private File save;
 
 	protected TicketOrderService() {
 
@@ -67,7 +72,7 @@ public class TicketOrderService {
 	public List<Ticket> order(String studentID, Date date, String startStation,
 			String endStation, int trainID, int count)
 			throws TicketOrderException {
-		
+
 		List<Ticket> ticketi = new ArrayList<Ticket>();
 
 		// TODO if the tickets are not available or sold out. Please throw the
@@ -215,6 +220,38 @@ public class TicketOrderService {
 		else
 			return check = false;
 
+	}
+
+	public void saveTickets(int from, int to) throws IOException {
+		save = new File("C:/Users/user/Desktop/TicketList.txt");
+		FileOutputStream fout = new FileOutputStream(save, true);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout));
+		bw.flush();
+
+		for (int i = -1; i < to - from; i++) {
+			bw.write("Ticket ID  " + tickets.get(i+from).getTicketID());
+			bw.newLine();
+			bw.write("1) Date: " + tickets.get(i+from).getDate());
+			bw.newLine();
+			bw.write("2) Train Type: " + tickets.get(i+from).getTrainID());
+			bw.newLine();
+			bw.write("3) Train No: " + tickets.get(i+from).getSeat().getCarNum());
+			bw.newLine();
+			bw.write("4) Dep Time: " + tickets.get(i+from).getDeptime());
+			bw.newLine();
+			bw.write("5) Arr Time: " + tickets.get(i+from).getArrtime());
+			bw.newLine();
+			bw.write("6) Seat Number: " + tickets.get(i+from).getSeat().getSeatNum());
+			bw.newLine();
+			bw.write("\n");
+		}
+		
+		bw.write("祝您旅途愉快!");
+
+		bw.flush();
+		bw.close();
+		fout.close();
+		System.out.println("完成");
 	}
 
 }

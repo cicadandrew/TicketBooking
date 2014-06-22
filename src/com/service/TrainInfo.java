@@ -11,6 +11,7 @@ public class TrainInfo {
 
 	private String trainID = null;
 	private List<TimeInfo> tables = new ArrayList<TimeInfo>();
+	private String        trainType = null;
 
 	public TrainInfo(Node item) {
 
