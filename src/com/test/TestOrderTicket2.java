@@ -32,13 +32,20 @@ public class TestOrderTicket2 {
 		 * Sample Input
 		 */
 
-		String studentID = "myid";
-		Date date = new Date(); // TODO
-		String startStation = "1001";
-		String endStation = "1002";
-
+//		String studentID = "myid";
+//		Date date = new Date(); // TODO
+//		String startStation = "1001";
+//		String endStation = "1002";
+//
+//		int trainID = 1100;
+//		int ticketnum = 2;
+		
+		String studentID = "myid";//TODO
+		Date date = new Date(); 
+		String startStation = "1003"; 
+		String endStation = "1030";
 		int trainID = 1100;
-		int ticketnum = 2;
+		int ticketnum = 150;
 
 		try {
 
